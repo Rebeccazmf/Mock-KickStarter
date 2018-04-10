@@ -1,0 +1,184 @@
+<div class="page-header">
+    <h1>Idea Details</h1>
+  </div>
+  <br/>
+  
+  <div class="row">
+    <!--span (click)="toggleAdd()">
+      <input type="checkbox" data-onstyle="success" data-size="normal" [checked]="addEnabled" data-toggle="toggle" name="add-toggle"
+        id="add-toggle" data-on="<i class='fa fa-plus'></i> Add idea" data-off="<i class='fa fa-plus'></i> Add idea">
+    </span-->
+  
+    <span>
+      <button type="button" style="font-size:1em;" class="btn btn-success btn-circle" [ngClass]="{'active ':!addEnabled,'disabled':addEnabled}"
+        (click)="toggleAdd()">
+        <i class='fa fa-plus'></i>
+      </button>
+    </span>
+    <span>
+      <button class="btn btn-success" (click)="refreshIdeaoption()">
+        <i class='fa fa-refresh'></i>
+      </button>
+    </span>
+  
+    <span class="form-inline">
+      <span class="input-group add-on">
+        <input class="form-control" placeholder="Search" name="srch-term" id="srch-term" type="text">
+        <div class="input-group-btn">
+          <button class="btn btn-success" type="submit">
+            <i class="glyphicon glyphicon-search"></i>
+          </button>
+        </div>
+      </span>
+    </span>
+  
+  
+  </div>
+  
+  <div *ngIf="addEnabled">
+    <div class="page-header">
+      <h3>Add Idea Option</h3>
+    </div>
+    <!-- <div *ngIf="(!creatorForm.pristine && !creatorForm.valid)" class="row alert alert-danger">
+      <div *ngIf="(ideaName.touched || ideaName.dirty )&& !ideaName.valid">
+        <div *ngIf="ideaName.errors.required">Idea Name is required</div>
+        <div *ngIf="ideaName.errors.minlength">Minmum is {{ideaName.errors.minlength.requiredLength}}</div>
+        <div *ngIf="ideaName.errors.pattern">Only Characters</div>
+      </div>
+    </div> -->
+    
+    <form ngForm #optionForm="ngForm" (ngSubmit)="onSubmit(optionForm)">
+        <div class="form-group">
+            <label for="idea" class="control-label">Idea</label>
+            <select id="ideaId" ngModel name="ideaId" required #ideaId="ngModel"> 
+              <option *ngFor="let idea of ideas" [value]="idea.ideaId">{{idea.ideaName}}</option>
+          </select>
+          </div>
+      <div class="form-group">
+        <label class="control-label" for="optionDesc">optionDesc</label>
+        <input type="text" id="optionDesc" ngModel name="optionDesc" #optionDesc="ngModel" class="form-control"
+          minlength="2" pattern="[a-zA-Z]*" required/>
+      </div>
+            <div class="form-group">
+                <label class="control-label" for="optionPrice">optionPrice</label>
+                <input type="text" id="optionPrice" ngModel name="optionPrice" #optionPrice="ngModel" class="form-control"
+                  minlength="1" pattern="[0-9]*" required/>
+              </div>
+              <div class="form-group">
+                  <label class="control-label" for="maxFunding">Idea target amount</label>
+                  <input type="text" id="maxFunding" ngModel name="maxFunding" #targetAmount="ngModel" class="form-control"
+                    minlength="2" pattern="[0-9]*" required/>
+                </div>
+              <!-- pass user id -->
+              <!-- <div class="form-group">
+                  <input type="hidden" id="userId" ngModel name="userId" #userId="ngModel" class="form-control"/>
+                </div> -->
+      <div class="text-center">
+        <button type="submit" [disabled]="optionForm.invalid" class="btn btn-primary">Submit</button>
+      </div>
+    </form>
+  </div>
+  <div>
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let track of results | async">
+        <img src="{{track.thumbnail}}">
+        <a target="_blank" href="{{track.link}}">{{ track.track }}
+        </a>
+      </li>
+    </ul>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th class="col-md-1 text-center">Option ID</th>
+          <th class="col-md-1 text-center">Option Desc</th>
+          <th class="col-md-2 text-center">Option Price</th>
+          <th class="col-md-2 text-center">Max Funding</th>
+          <th class="col-md-2 text-center">Bought Amount</th>
+          <th class="col-md-1 text-center">Idea Id</th>
+          <th class="col-md-2 text-center">Action</th>
+  
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let ideaoption of ideaoptions" class="text-center">     
+          <td>{{ideaoption.optionId}}</td>
+          <td>{{ideaoption.optionDesc}}</td>
+          <td>{{ideaoption.optionPrice}}</td>
+          <td>{{ideaoption.maxFunding}}</td>
+          <td>{{ideaoption.boughtAmount}}</td>
+          <td>{{ideaoption.ideaId}}</td>
+          <td>
+            <button type="button" class="btn btn-warning fa fa-edit" (click)="editIdeaoption(ideaoption,editIdeaoptionModal)"> </button>
+            <button type="button" class="btn btn-danger fa fa-minus" (click)="deleteIdeaoption(ideaoption,deleteIdeaoptionModal)"></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <br/>
+  <br/>
+  
+  <div class="row">
+    <modal #editIdeaoptionModal>
+      <modal-header>
+        <h1>Edit Ideaoption</h1>
+      </modal-header>
+     
+      <modal-content class="row">
+        <form ngForm #OptionEditForm="ngForm">
+  
+          <div class="form-group">
+            <label class="control-label" for="optionId">optionId</label>
+            <input type="text" id="optionId" [(ngModel)]="ideaoption.optionId" name="editOptionId" disabled class="form-control" />
+            
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="optionDesc">optionDesc</label>
+            <input type="text" id="optionDesc" [(ngModel)]="ideaoption.optionDesc" name="editOptionDesc" #editOptionDesc="ngModel" class="form-control"
+              minlength="4" pattern="[a-zA-Z]*" required/>
+              <!-- <div *ngIf="(!CreatorEditForm.pristine && !CreatorEditForm.valid)">
+                  <div *ngIf="!editIdeaName.valid && editIdeaName.errors.required">idea Name is required</div>
+                  <div *ngIf="!editIdeaName.valid && editIdeaName.errors.minlength">Minmum is {{editIdeaName.errors.minlength.requiredLength}}</div>
+                  <div *ngIf="!editIdeaName.valid && editIdeaName.errors.pattern">Only Characters</div>
+                </div> -->
+          </div>
+  
+          <div class="form-group">
+            <label for="optionPrice" class="control-label">optionPrice</label>
+            <input type="text" id="optionPrice" [(ngModel)]="ideaoption.optionPrice" name="editOptionPrice" #editOptionPrice="ngModel" class="form-control"
+            minlength="1" pattern="[0-9]*" required/>
+          </div>
+          <div class="form-group">
+              <label for="maxFunding" class="control-label">Max Funding</label>
+              <input type="text" id="maxFunding" [(ngModel)]="ideaoption.maxFunding" name="editMaxFunding" #editMaxFunding="ngModel" class="form-control"
+              minlength="1" pattern="[0-9]*" required/>
+            </div>
+  
+        </form>
+      </modal-content>
+      <modal-footer>
+        <button class="btn btn-primary" [disabled]="OptionEditForm.invalid" (click)="onEdit();editIdeaoptionModal.close()">Save</button>
+        <button class="btn btn-primary" (click)="editIdeaoptionModal.close()">close</button>
+      </modal-footer>
+    </modal>
+  </div>
+  
+  
+  <div class="row">
+    <modal #deleteIdeaoptionModal>
+      <modal-header>
+        <h1>Delete Idea Option</h1>
+      </modal-header>
+     
+      <modal-content class="row">
+          <div *ngIf="modalError" class="row alert alert-danger">
+                  Could not Delete
+          </div>
+            Are you sure ?
+      </modal-content>
+      <modal-footer>
+        <button class="btn btn-primary" (click)="onDelete()">Delete</button>
+        <button class="btn btn-primary" (click)="deleteIdeaoptionModal.close()">close</button>
+      </modal-footer>
+    </modal>
+  </div>

@@ -1,0 +1,232 @@
+<div class="page-header">
+  <h1>idea Details</h1>
+</div>
+<br/>
+
+<div class="row">
+  <!-- <span>
+      <button class="btn btn-success" (click)="refreshidea()">
+        <i class='fa fa-refresh'></i>
+      </button>
+    </span> -->
+
+  <span class="form-inline">
+    <span class="input-group add-on">
+      <input class="form-control" placeholder="Search" name="srch-term" id="srch-term" type="text">
+      <div class="input-group-btn">
+        <button class="btn btn-success" type="submit">
+          <i class="glyphicon glyphicon-search"></i>
+        </button>
+      </div>
+    </span>
+  </span>
+</div>
+
+
+<div>
+  <ul class="list-group">
+      <li class="list-group-item" *ngFor="let track of results | async">
+        <img src="{{track.thumbnail}}">
+        <a target="_blank" href="{{track.link}}">{{ track.track }}
+        </a>
+      </li>
+    </ul>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th class="col-md-1 text-center">idea ID</th>
+        <th class="col-md-2 text-center">idea Name</th>
+        <th class="col-md-2 text-center">idea Desc</th>
+        <th class="col-md-2 text-center">idea Categoty</th>
+        <th class="col-md-2 text-center">Start Date</th>
+        <th class="col-md-2 text-center">End Date</th>
+        <th class="col-md-2 text-center">Garthered Amount</th>
+        <th class="col-md-2 text-center">Target Amount</th>
+        <th class="col-md-* text-center">Action</th>
+
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let idea of ideas" class="text-center">
+        <td>{{idea.ideaId}}</td>
+        <td>{{idea.ideaName}}</td>
+        <td>{{idea.ideaDesc}}</td>
+        <td>{{idea.categoryId}}</td>
+        <td>{{idea.startDate}}</td>
+        <td>{{idea.endDate}}</td>
+        <td>{{idea.gatheredAmount}}</td>
+        <td>{{idea.targetAmount}}</td>  
+        <td>
+          <button type="button" class="btn btn-warning fa fa-edit" (click)="refreshIdeaoption(idea);editIdea(idea,purchaseModal)"> </button>      
+        </td>
+        <!-- <td>
+            <button type="button" class="btn btn-warning fa fa-edit" (click)="editidea(idea,editideaModal)"> </button>
+            <button type="button" class="btn btn-danger fa fa-minus" (click)="deleteidea(idea,deleteideaModal)"></button>
+          </td> -->
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+<!-- <div *ngIf="addEnabled">
+  <div class="page-header">
+    <h3>Options</h3>
+  </div>
+  <div>
+      <ul class="list-group">
+        <li class="list-group-item" *ngFor="let track of results | async">
+          <img src="{{track.thumbnail}}">
+          <a target="_blank" href="{{track.link}}">{{ track.track }}
+          </a>
+        </li>
+      </ul>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th class="col-md-1 text-center">Option ID</th>
+            <th class="col-md-1 text-center">Option Desc</th>
+            <th class="col-md-2 text-center">Option Price</th>
+            <th class="col-md-2 text-center">Max Funding</th>
+            <th class="col-md-2 text-center">Bought Amount</th>
+            <th class="col-md-1 text-center">Idea Id</th>
+            <th class="col-md-2 text-center">Action</th>
+    
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let ideaoption of ideaoptions" class="text-center">     
+            <td>{{ideaoption.optionId}}</td>
+            <td>{{ideaoption.optionDesc}}</td>
+            <td>{{ideaoption.optionPrice}}</td>
+            <td>{{ideaoption.maxFunding}}</td>
+            <td>{{ideaoption.boughtAmount}}</td>
+            <td>{{ideaoption.ideaId}}</td>
+            <td>
+              <button type="button" class="btn btn-warning fa fa-edit" (click)="editIdeaoption(ideaoption,editIdeaoptionModal)"> </button>
+              <button type="button" class="btn btn-danger fa fa-minus" (click)="deleteIdeaoption(ideaoption,deleteIdeaoptionModal)"></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+</div>
+<br/>
+<br/> -->
+
+<div class="row">
+    <modal #purchaseModal>
+      <modal-header>
+        <h1>Edit idea</h1>
+      </modal-header>
+     
+      <modal-content class="row">
+          <form ngForm #payForm="ngForm" (ngSubmit)="onSubmit(payForm)">
+              <div class="form-group">
+                <label class="control-label" for="cardNo">cardNo</label>
+                <input type="text" id="cardNo" ngModel name="cardNo" #cardNo="ngModel" class="form-control"
+                  minlength="4" required/>
+              </div>
+          
+              <div class="form-group">
+                <label for="cvv" class="control-label">cvv</label>
+                <input type="text" ngModel name="cvv" id="cvv"  #cvv="ngModel" class="form-control">
+              </div>
+              <div class="form-group">
+                  <label for="expDate" class="control-label">expDate</label>
+                  <input type="text" ngModel name="expDate" id="expDate"  #expDate="ngModel" class="form-control">
+                </div>
+              <div class="text-center">
+                <button type="submit" [disabled]="payForm.invalid" class="btn btn-primary">Save</button>
+              </div>
+            </form>
+
+       
+              <div>
+              <label class="control-label" for="ideaName">Idea Name</label>
+              <input type="text" id="ideaName" [(ngModel)]="idea.ideaName" name="editideaId" disabled class="form-control" />
+              
+            </div>
+          <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th class="col-md-1 text-center">Option ID</th>
+                  <th class="col-md-1 text-center">Option Desc</th>
+                  <th class="col-md-2 text-center">Option Price</th>
+                  <th class="col-md-2 text-center">Max Funding</th>
+                  <th class="col-md-1 text-center">Amount</th>
+                  <th class="col-md-1 text-center">Idea Id</th>
+                  <th class="col-md-2 text-center">Action</th>
+          
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let ideaoption of ideaoptions;let in = index" class="text-center">     
+                  <td>{{ideaoption.optionId}}</td>
+                  <td>{{ideaoption.optionDesc}}</td>
+                  <td>{{ideaoption.optionPrice}}</td>
+                  <td>{{ideaoption.maxFunding}}</td>
+                  <td><div class="form-group">
+                      <input type="number" id="amount-{{in}" name="amount" step="1" min="1" max="10" value="0">                      
+                    </div></td>
+                  <!-- <td>{{ideaoption.boughtAmount}}</td> -->
+                  <td>{{ideaoption.ideaId}}</td>
+                  <button class="btn btn-primary" (click)="editIdeaoption(ideaoption,purchaseModal);editPurchase(in,purchaseModal);onEdit();purchaseModal.close()">Buy</button>
+                  
+                </tr>
+
+              </tbody>
+            </table>
+          <!-- </form> -->
+          
+          
+        <!-- <form ngForm #MyEditForm="ngForm">
+  
+          <div class="form-group">
+            <label class="control-label" for="ideaName">ideaName</label>
+            <input type="text" id="ideaName" [(ngModel)]="idea.ideaId" name="editideaId" disabled class="form-control" />
+            
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="ideaName">ideaName</label>
+            <input type="text" id="ideaName" [(ngModel)]="idea.ideaName" name="editideaName" #editideaName="ngModel" class="form-control"
+              minlength="4" pattern="[a-zA-Z]*" required/>
+              <div *ngIf="(!MyEditForm.pristine && !MyEditForm.valid)">
+                  <div *ngIf="!editideaName.valid && editideaName.errors.required">idea Name is required</div>
+                  <div *ngIf="!editideaName.valid && editideaName.errors.minlength">Minmum is {{editideaName.errors.minlength.requiredLength}}</div>
+                  <div *ngIf="!editideaName.valid && editideaName.errors.pattern">Only Characters</div>
+                </div>
+          </div>
+  
+          <div class="form-group">
+            <label for="ideaDesc" class="control-label">ideaDesc</label>
+            <input type="text" id="ideaDesc" [(ngModel)]="idea.ideaDesc" name="editideaDesc" #editideaDesc="ngModel" class="form-control">
+          </div>
+  
+        </form> -->
+      </modal-content>
+      <!-- <modal-footer>
+        <button class="btn btn-primary" [disabled]="MyEditForm.invalid" (click)="onEdit();editideaModal.close()">Save</button>
+        <button class="btn btn-primary" (click)="editideaModal.close()">close</button>
+      </modal-footer> -->
+    </modal>
+  </div>
+  
+  
+  <!--<div class="row">
+    <modal #deleteideaModal>
+      <modal-header>
+        <h1>Delete idea</h1>
+      </modal-header>
+     
+      <modal-content class="row">
+          <div *ngIf="modalError" class="row alert alert-danger">
+                  Could not Delete
+          </div>
+            Are you sure ?
+      </modal-content>
+      <modal-footer>
+        <button class="btn btn-primary" (click)="onDelete()">Delete</button>
+        <button class="btn btn-primary" (click)="deleteideaModal.close()">close</button>
+      </modal-footer>
+    </modal>
+  </div> -->

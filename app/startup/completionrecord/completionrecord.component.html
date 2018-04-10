@@ -1,0 +1,194 @@
+<div class="page-header">
+  <h1>Accepted Services</h1>
+</div>
+<br/>
+
+<div class="row">
+  <!--span (click)="toggleAdd()">
+        <input type="checkbox" data-onstyle="success" data-size="normal" [checked]="addEnabled" data-toggle="toggle" name="add-toggle"
+          id="add-toggle" data-on="<i class='fa fa-plus'></i> Add idea" data-off="<i class='fa fa-plus'></i> Add idea">
+      </span-->
+  <div>
+      <form ngForm #acceptedForm="ngForm" (ngSubmit)="onSubmit(acceptedForm)">
+          <div class="form-group">
+          <label for="idea" class="control-label">Idea</label>
+          <select id="ideaName" name="ideaName" [(ngModel)]="idea" required>
+          <option *ngFor="let idea of ideas" [(ngValue)]="idea.ideaName">{{idea.ideaName}}</option>
+          </select>
+          <button type="submit" [disabled]="acceptedForm.invalid" class="btn btn-primary">Submit</button>
+          </div>
+          </form>
+          
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th class="col-md-1 text-center">Bid ID</th>
+          <th class="col-md-2 text-center">Bid Desc</th>
+          <th class="col-md-2 text-center">Start Date</th>
+          <th class="col-md-2 text-center">End Date</th>
+          <th class="col-md-2 text-center">Bid Amount</th>
+          <th class="col-md-1 text-center">Service Id</th>
+          <th class="col-md-2 text-center">Bid Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let bidrecord of bidrecords" class="text-center">
+          <td>{{bidrecord.bidId}}</td>
+          <td>{{bidrecord.bidDesc}}</td>
+          <td>{{bidrecord.startDate}}</td>
+          <td>{{bidrecord.endDate}}</td>
+          <td>{{bidrecord.bidAmount}}</td>
+          <td>{{bidrecord.serviceId}}</td>
+          <td>{{bidrecord.bidStatus}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Add Completion Records -->
+  <span>
+    <button type="button" style="font-size:1em;" class="btn btn-success btn-circle" [ngClass]="{'active ':!addEnabled,'disabled':addEnabled}"
+      (click)="toggleAdd()">
+      <i class='fa fa-plus'></i>
+    </button>
+  </span>
+  <span>
+    <button class="btn btn-success" (click)="refreshBidrecord()">
+      <i class='fa fa-refresh'></i>
+    </button>
+  </span>
+
+  <span class="form-inline">
+    <span class="input-group add-on">
+      <input class="form-control" placeholder="Search" name="srch-term" id="srch-term" type="text">
+      <div class="input-group-btn">
+        <button class="btn btn-success" type="submit">
+          <i class="glyphicon glyphicon-search"></i>
+        </button>
+      </div>
+    </span>
+  </span>
+
+
+</div>
+
+<div *ngIf="addEnabled">
+  <div class="page-header">
+    <h3>Mark Percentage</h3>
+  </div>
+
+  <form ngForm #markForm="ngForm" (ngSubmit)="addMark(markForm)">
+    <div class="form-group">
+      <label for="service" class="control-label">Service</label>
+      <select name="serviceId" ngModel name="serviceId" required #serviceId="ngModel">
+        <option *ngFor="let service of services" [value]="service.serviceId">{{service.serviceDesc}}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label class="control-label" for="percentage">percentage</label>
+      <input type="text" id="percentage" ngModel name="percentage" #percentage="ngModel" class="form-control" minlength="1" 
+        required/>
+    </div>
+    <div class="form-group">
+      <label class="control-label" for="updateDate">Update Date</label>
+      <input type="text" id="updateDate" ngModel name="updateDate" #updateDate="ngModel" class="form-control" minlength="4" pattern="([0-9]{4}[-][0-9]{2}[-][0-9]{2})"
+        required/>
+    </div>
+   
+    <div class="text-center">
+      <button type="submit" [disabled]="markForm.invalid" class="btn btn-primary">Submit</button>
+    </div>
+  </form>
+</div>
+<div>
+  <ul class="list-group">
+    <li class="list-group-item" *ngFor="let track of results | async">
+      <img src="{{track.thumbnail}}">
+      <a target="_blank" href="{{track.link}}">{{ track.track }}
+      </a>
+    </li>
+  </ul>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th class="col-md-1 text-center">Record ID</th>
+        <th class="col-md-2 text-center">Service ID</th>
+        <th class="col-md-2 text-center">Percentage</th>
+        <th class="col-md-2 text-center">Update Date</th>
+        <th class="col-md-2 text-center">Action</th>
+
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let completionrecord of completionrecords" class="text-center">
+        <td>{{completionrecord.recordId}}</td>
+        <td>{{completionrecord.serviceId}}</td>
+        <td>{{completionrecord.percentage}}</td>
+        <td>{{completionrecord.updateDate}}</td>
+        <td>
+          <button type="button" class="btn btn-warning fa fa-edit" (click)="editBidrecord(bidrecord,editBidrecordModal)"> </button>
+          <button type="button" class="btn btn-danger fa fa-minus" (click)="deleteBidrecord(bidrecord,deleteBidrecordModal)"></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<br/>
+<br/>
+
+<!-- <div class="row">
+  <modal #editBidrecordModal>
+    <modal-header>
+      <h1>Edit Bidrecord</h1>
+    </modal-header>
+
+    <modal-content class="row">
+      <form ngForm #BidEditForm="ngForm">
+
+        <div class="form-group">
+          <label class="control-label" for="bidId">Bid Id</label>
+          <input type="text" id="bidId" [(ngModel)]="bidrecord.bidId" name="editBidId" disabled class="form-control" />
+
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="bidDesc">bidDesc</label>
+          <input type="text" id="bidDesc" [(ngModel)]="bidrecord.bidDesc" name="editBidDesc" #editBidDesc="ngModel" class="form-control"
+            minlength="4" pattern="[a-zA-Z]*" required/>
+         
+        </div>
+        <div class="form-group">
+          <label for="bidStatus" class="control-label">Bid Status</label>
+          <input type="text" id="bidStatus" [(ngModel)]="bidrecord.bidStatus" name="editBidStatus" #editBidStatus="ngModel" class="form-control"
+            minlength="1" pattern="[a-zA-Z]*" required/>
+        </div>
+        
+      </form>
+    </modal-content>
+    <modal-footer>
+      <button class="btn btn-primary" [disabled]="BidEditForm.invalid" (click)="onEdit();editBidrecordModal.close()">Save</button>
+      <button class="btn btn-primary" (click)="editBidrecordModal.close()">close</button>
+    </modal-footer>
+  </modal>
+</div>
+
+
+<div class="row">
+  <modal #deleteBidrecordModal>
+    <modal-header>
+      <h1>Delete Bid Record</h1>
+    </modal-header>
+
+    <modal-content class="row">
+      <div *ngIf="modalError" class="row alert alert-danger">
+        Could not Delete
+      </div>
+      Are you sure ?
+    </modal-content>
+    <modal-footer>
+      <button class="btn btn-primary" (click)="onDelete()">Delete</button>
+      <button class="btn btn-primary" (click)="deleteBidrecordModal.close()">close</button>
+    </modal-footer>
+  </modal>
+</div> -->

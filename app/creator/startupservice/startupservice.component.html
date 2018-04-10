@@ -1,0 +1,184 @@
+<div class="page-header">
+  <h1>Service Details</h1>
+</div>
+<br/>
+
+<div class="row">
+  <!--span (click)="toggleAdd()">
+      <input type="checkbox" data-onstyle="success" data-size="normal" [checked]="addEnabled" data-toggle="toggle" name="add-toggle"
+        id="add-toggle" data-on="<i class='fa fa-plus'></i> Add idea" data-off="<i class='fa fa-plus'></i> Add idea">
+    </span-->
+
+  <span>
+    <button type="button" style="font-size:1em;" class="btn btn-success btn-circle" [ngClass]="{'active ':!addEnabled,'disabled':addEnabled}"
+      (click)="toggleAdd()">
+      <i class='fa fa-plus'></i>
+    </button>
+  </span>
+  <span>
+    <button class="btn btn-success" (click)="refreshStartupservice()">
+      <i class='fa fa-refresh'></i>
+    </button>
+  </span>
+
+  <span class="form-inline">
+    <span class="input-group add-on">
+      <input class="form-control" placeholder="Search" name="srch-term" id="srch-term" type="text">
+      <div class="input-group-btn">
+        <button class="btn btn-success" type="submit">
+          <i class="glyphicon glyphicon-search"></i>
+        </button>
+      </div>
+    </span>
+  </span>
+
+
+</div>
+
+<div *ngIf="addEnabled">
+  <div class="page-header">
+    <h3>Add Service</h3>
+  </div>
+  <!-- <div *ngIf="(!creatorForm.pristine && !creatorForm.valid)" class="row alert alert-danger">
+      <div *ngIf="(ideaName.touched || ideaName.dirty )&& !ideaName.valid">
+        <div *ngIf="ideaName.errors.required">Idea Name is required</div>
+        <div *ngIf="ideaName.errors.minlength">Minmum is {{ideaName.errors.minlength.requiredLength}}</div>
+        <div *ngIf="ideaName.errors.pattern">Only Characters</div>
+      </div>
+    </div> -->
+
+  <form ngForm #serviceForm="ngForm" (ngSubmit)="onSubmit(serviceForm)">
+    <div class="form-group">
+      <label for="idea" class="control-label">Idea</label>
+      <select name="ideaId" ngModel name="ideaId" required #ideaId="ngModel">
+        <option *ngFor="let idea of ideas" [value]="idea.ideaId">{{idea.ideaName}}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="control-label" for="serviceDesc">serviceDesc</label>
+      <input type="text" id="serviceDesc" ngModel name="serviceDesc" #serviceDesc="ngModel" class="form-control" minlength="2"
+        pattern="[a-zA-Z]*" required/>
+    </div>
+    <div class="form-group">
+      <label class="control-label" for="startDate">Service Start Date</label>
+      <input type="text" id="startDate" ngModel name="startDate" #startDate="ngModel" class="form-control" minlength="4" pattern="([0-9]{4}[-][0-9]{2}[-][0-9]{2})"
+        required/>
+    </div>
+    <div class="form-group">
+      <label class="control-label" for="endDate">Service End Date</label>
+      <input type="text" id="endDate" ngModel name="endDate" #endDate="ngModel" class="form-control" minlength="4" pattern="([0-9]{4}[-][0-9]{2}[-][0-9]{2})"
+        required/>
+    </div>
+    <div class="form-group">
+      <label class="control-label" for="baseAmount">Service Base Amount</label>
+      <input type="text" id="baseAmount" ngModel name="baseAmount" #targetAmount="ngModel" class="form-control" minlength="2" pattern="[0-9]*"
+        required/>
+    </div>
+
+    <div class="text-center">
+      <button type="submit" [disabled]="serviceForm.invalid" class="btn btn-primary">Submit</button>
+    </div>
+  </form>
+</div>
+<div>
+  <ul class="list-group">
+    <li class="list-group-item" *ngFor="let track of results | async">
+      <img src="{{track.thumbnail}}">
+      <a target="_blank" href="{{track.link}}">{{ track.track }}
+      </a>
+    </li>
+  </ul>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th class="col-md-1 text-center">Service ID</th>
+        <th class="col-md-1 text-center">Service Desc</th>
+        <th class="col-md-2 text-center">Base Amount</th>
+        <th class="col-md-2 text-center">Start Date</th>
+        <th class="col-md-2 text-center">End Date</th>
+        <th class="col-md-2 text-center">Service Status</th>
+        <th class="col-md-1 text-center">Idea Id</th>
+        <th class="col-md-2 text-center">Action</th>
+
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let service of services" class="text-center">
+        <td>{{service.serviceId}}</td>
+        <td>{{service.serviceDesc}}</td>
+        <td>{{service.baseAmount}}</td>
+        <td>{{service.startDate}}</td>
+        <td>{{service.endDate}}</td>   
+        <td>{{service.serviceStatus}}</td>        
+        <td>{{service.ideaId}}</td>
+        <td>
+          <button type="button" class="btn btn-warning fa fa-edit" (click)="editStartupservice(service,editStartupserviceModal)">
+          </button>
+          <button type="button" class="btn btn-danger fa fa-minus" (click)="deleteStartupservice(service,deleteStartupserviceModal)"></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<br/>
+<br/>
+
+<div class="row">
+  <modal #editStartupserviceModal>
+    <modal-header>
+      <h1>Edit Startup Service</h1>
+    </modal-header>
+
+    <modal-content class="row">
+      <form ngForm #OptionEditForm="ngForm">
+
+        <div class="form-group">
+          <label class="control-label" for="serviceId">serviceId</label>
+          <input type="text" id="serviceId" [(ngModel)]="service.serviceId" name="editServiceId" disabled class="form-control"/>
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="serviceDesc">serviceDesc</label>
+          <input type="text" id="serviceDesc" [(ngModel)]="service.serviceDesc" name="editServiceDesc" #editServiceDesc="ngModel"
+            class="form-control" minlength="4" pattern="[a-zA-Z]*" required/>
+          <!-- <div *ngIf="(!CreatorEditForm.pristine && !CreatorEditForm.valid)">
+                  <div *ngIf="!editIdeaName.valid && editIdeaName.errors.required">idea Name is required</div>
+                  <div *ngIf="!editIdeaName.valid && editIdeaName.errors.minlength">Minmum is {{editIdeaName.errors.minlength.requiredLength}}</div>
+                  <div *ngIf="!editIdeaName.valid && editIdeaName.errors.pattern">Only Characters</div>
+                </div> -->
+        </div>
+
+        <div class="form-group">
+          <label for="baseAmount" class="control-label">baseAmount</label>
+          <input type="text" id="baseAmount" [(ngModel)]="service.baseAmount" name="editBaseAmount" #editBaseAmount="ngModel"
+            class="form-control" minlength="1" pattern="[0-9]*" required/>
+        </div>
+        
+
+      </form>
+    </modal-content>
+    <modal-footer>
+      <button class="btn btn-primary" [disabled]="OptionEditForm.invalid" (click)="onEdit();editStartupserviceModal.close()">Save</button>
+      <button class="btn btn-primary" (click)="editStartupserviceModal.close()">close</button>
+    </modal-footer>
+  </modal>
+</div>
+
+
+<div class="row">
+  <modal #deleteStartupserviceModal>
+    <modal-header>
+      <h1>Delete Idea Option</h1>
+    </modal-header>
+
+    <modal-content class="row">
+      <div *ngIf="modalError" class="row alert alert-danger">
+        Could not Delete
+      </div>
+      Are you sure ?
+    </modal-content>
+    <modal-footer>
+      <button class="btn btn-primary" (click)="onDelete()">Delete</button>
+      <button class="btn btn-primary" (click)="deleteStartupserviceModal.close()">close</button>
+    </modal-footer>
+  </modal>
+</div>

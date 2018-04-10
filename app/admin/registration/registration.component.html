@@ -1,0 +1,70 @@
+<div class="jumbotron">
+  <h1>Register Page</h1> 
+  <p>
+        CREATE A CRUD FOR REGISTRATION  
+  </p> 
+  <div >
+    <div *ngIf="error"  class="alert alert-danger">{{error}}</div>   
+    <form ngForm #regForm="ngForm" (ngSubmit)="onSubmit(regForm)">                          
+        
+  <!-- <form (ngSubmit)="regForm.form.valid && register()" #regForm="ngForm" novalidate> -->
+    <div class="form-group" [ngClass]="{ 'has-error': regForm.submitted && !username.valid }">
+        <label for="username">Username</label>
+        <input type="text" class="form-control" ngModel name="username" #username="ngModel" required />
+        <div *ngIf="regForm.submitted && !username.valid" class="help-block">Username is required</div>
+    </div>
+    <div class="form-group" [ngClass]="{ 'has-error': regForm.submitted && !password.valid }">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" ngModel name="password" #password="ngModel" required />
+        <div *ngIf="regForm.submitted && !password.valid" class="help-block">Password is required</div>
+    </div>
+    <div class="form-group" [ngClass]="{ 'has-error': regForm.submitted && !yourName.valid }">
+      <label for="yourName">Campany/Personal Name</label>
+      <input type="text" class="form-control" ngModel name="yourName" #yourName="ngModel" required />
+      <div *ngIf="regForm.submitted && !yourName.valid" class="help-block">Campany/Personal name is required</div>
+    </div>
+      <div class="form-group" [ngClass]="{ 'has-error': regForm.submitted && !userDesc.valid }">
+          <label for="userDesc">Description</label>
+          <input type="text" class="form-control" ngModel name="userDesc" #userDesc="ngModel" required />
+          <div *ngIf="regForm.submitted && !userDesc.valid" class="help-block">Description is required</div>
+        </div>
+    <div class="form-group">
+      <label for="role" class="control-label">Role</label>
+      <select>
+        <!-- <option *ngFor="let role of roles" [value]="role.value">{{role.roleName}}</option> -->
+        <option  [value]="2">Creator</option>
+        <option  [value]="3">Startup</option>
+        <option  [value]="5">Funder</option>
+    </select>
+    </div>
+    <div class="form-group">
+        <button [disabled]="loading" class="btn btn-primary">Register</button>
+        <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+    </div>
+</form>
+</div>
+
+<!-- 
+  <form ngForm #regForm="ngForm" (ngSubmit)="onSubmit(regForm)">
+    <div class="form-group">
+      <label class="control-label" for="username">Username</label>
+      <input type="text" id="username" ngModel name="username" #Username="ngModel" class="form-control"
+        minlength="2" pattern="[a-zA-Z]*" required/>
+    </div>
+    <div class="form-group">
+      <label for="password" class="control-label">Password</label>
+      <input type="text" ngModel name="password" id="password"  #roleDesc="ngModel" class="form-control">
+    </div>
+    <div class="form-group">
+      <label for="role" class="control-label">Role</label>
+      <select>
+        <option *ngFor="let role of roles" [value]="role.value">{{role.roleName}}</option>
+    </select>
+    </div>
+    <div class="form-group">
+  </div>
+    <div class="text-center">
+      <button type="submit" [disabled]="regForm.invalid" class="btn btn-primary">Register</button>
+    </div>
+  </form>
+</div> -->

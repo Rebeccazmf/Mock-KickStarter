@@ -1,0 +1,73 @@
+<div class="page-header">
+  <h1>Idea Details</h1>
+</div>
+<br/>
+
+<div class="row">
+  <!--span (click)="toggleAdd()">
+      <input type="checkbox" data-onstyle="success" data-size="normal" [checked]="addEnabled" data-toggle="toggle" name="add-toggle"
+        id="add-toggle" data-on="<i class='fa fa-plus'></i> Add idea" data-off="<i class='fa fa-plus'></i> Add idea">
+    </span-->
+  <span>
+    <button class="btn btn-success" (click)="refreshIdea()">
+      <i class='fa fa-refresh'></i>
+    </button>
+  </span>
+
+  <span class="form-inline">
+    <span class="input-group add-on">
+      <input class="form-control" placeholder="Search" name="srch-term" id="srch-term" type="text">
+      <div class="input-group-btn">
+        <button class="btn btn-success" type="submit">
+          <i class="glyphicon glyphicon-search"></i>
+        </button>
+      </div>
+    </span>
+  </span>
+</div>
+
+<div>
+  <ul class="list-group">
+    <li class="list-group-item" *ngFor="let track of results | async">
+      <img src="{{track.thumbnail}}">
+      <a target="_blank" href="{{track.link}}">{{ track.track }}
+      </a>
+    </li>
+  </ul>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th class="col-md-1 text-center">Idea ID</th>
+        <th class="col-md-1 text-center">Idea Name</th>
+        <th class="col-md-1 text-center">Idea Desc</th>
+        <th class="col-md-* text-center">Target Amount</th>
+        <th class="col-md-* text-center">Gathered Amount</th>
+        <th class="col-md-2 text-center">Start Date</th>
+        <th class="col-md-2 text-center">End Date</th>
+        <th class="col-md-2 text-center">Idea Status</th>
+        <th class="col-md-1 text-center">Category Id</th>
+        <!-- <th class="col-md-2 text-center">Action</th> -->
+
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let idea of ideas" class="text-center">
+        <td>{{idea.ideaId}}</td>
+        <td>{{idea.ideaName}}</td>
+        <td>{{idea.ideaDesc}}</td>
+        <td>{{idea.targetAmount}}</td>
+        <td>{{idea.gatheredAmount}}</td>
+        <td>{{idea.startDate}}</td>
+        <td>{{idea.endDate}}</td>
+        <td>{{idea.ideaStatus}}</td>
+        <td>{{idea.categoryId}}</td>
+        <!-- <td>
+          <button type="button" class="btn btn-warning fa fa-edit" (click)="editIdea(idea,editIdeaModal)"> </button>
+          <button type="button" class="btn btn-danger fa fa-minus" (click)="deleteIdea(idea,deleteIdeaModal)"></button>
+        </td> -->
+      </tr>
+    </tbody>
+  </table>
+</div>
+<br/>
+<br/>

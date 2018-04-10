@@ -1,0 +1,117 @@
+
+ <h4> Idea list</h4>
+
+<div>
+<ul class="list-group">
+    <li class="list-group-item" *ngFor="let track of results | async">
+      <img src="{{track.thumbnail}}">
+      <a target="_blank" href="{{track.link}}">{{ track.track }}
+      </a>
+    </li>
+  </ul>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th class="col-md-1 text-center">idea ID</th>
+      <th class="col-md-2 text-center">idea Name</th>
+      <th class="col-md-2 text-center">idea Desc</th>
+      <th class="col-md-2 text-center">idea Categoty</th>
+      <th class="col-md-2 text-center">Start Date</th>
+      <th class="col-md-2 text-center">End Date</th>
+      <th class="col-md-2 text-center">Garthered Amount</th>
+      <th class="col-md-2 text-center">Target Amount</th>
+      <th class="col-md-* text-center">Action</th>
+
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let idea of ideas" class="text-center">
+      <td>{{idea.ideaId}}</td>
+      <td>{{idea.ideaName}}</td>
+      <td>{{idea.ideaDesc}}</td>
+      <td>{{idea.categoryId}}</td>
+      <td>{{idea.startDate}}</td>
+      <td>{{idea.endDate}}</td>
+      <td>{{idea.gatheredAmount}}</td>
+      <td>{{idea.targetAmount}}</td>  
+      <!-- <td>
+        <button type="button" class="btn btn-warning fa fa-edit" (click)="refreshIdeaoption(idea);editIdea(idea,purchaseModal)"> </button>      
+      </td> -->
+      <!-- <td>
+          <button type="button" class="btn btn-warning fa fa-edit" (click)="editidea(idea,editideaModal)"> </button>
+          <button type="button" class="btn btn-danger fa fa-minus" (click)="deleteidea(idea,deleteideaModal)"></button>
+        </td> -->
+    </tr>
+  </tbody>
+</table>
+</div>
+
+    <h4> Service(idea) list</h4>
+
+<div> <table class="table table-striped">
+    <thead>
+      <tr>
+        <th class="col-md-1 text-center">Option ID</th>
+        <th class="col-md-1 text-center">Option Desc</th>
+        <th class="col-md-2 text-center">Option Price</th>
+        <th class="col-md-2 text-center">Max Funding</th>
+        <th class="col-md-1 text-center">Amount</th>
+        <th class="col-md-1 text-center">Idea Id</th>
+        <th class="col-md-2 text-center">Action</th>
+
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let ideaoption of ideaoptions;let in = index" class="text-center">     
+        <td>{{ideaoption.optionId}}</td>
+        <td>{{ideaoption.optionDesc}}</td>
+        <td>{{ideaoption.optionPrice}}</td>
+        <td>{{ideaoption.maxFunding}}</td>
+        <td>{{ideaoption.boughtAmount}}</td>
+        <!-- <td>{{ideaoption.boughtAmount}}</td> -->
+        <td>{{ideaoption.ideaId}}</td>
+        <!-- <button class="btn btn-primary" (click)="editIdeaoption(ideaoption,purchaseModal);editPurchase(in,purchaseModal);onEdit();purchaseModal.close()">Buy</button> -->
+        
+      </tr>
+
+    </tbody>
+  </table>
+</div>
+
+    <h4> Purchase list</h4>
+
+<div>
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let track of results | async">
+        <img src="{{track.thumbnail}}">
+        <a target="_blank" href="{{track.link}}">{{ track.track }}
+        </a>
+      </li>
+    </ul>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th class="col-md-1 text-center">Purchase ID</th>
+          <th class="col-md-* text-center">Purchase Amount</th>
+          <th class="col-md-2 text-center">Purchase Date</th>
+          <th class="col-md-2 text-center">Service ID</th>
+          <th class="col-md-1 text-center">User ID</th>
+          <!-- <th class="col-md-2 text-center">Action</th> -->
+  
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let purchase of purchases" class="text-center">
+          <td>{{purchase.purchaseId}}</td>
+          <td>{{purchase.purchaseAmount}}</td>
+          <td>{{purchase.purchaseDate}}</td>
+          <td>{{purchase.serviceId}}</td>
+          <td>{{purchase.userId}}</td>
+          <!-- <td>
+            <button type="button" class="btn btn-warning fa fa-edit" (click)="editIdea(idea,editIdeaModal)"> </button>
+            <button type="button" class="btn btn-danger fa fa-minus" (click)="deleteIdea(idea,deleteIdeaModal)"></button>
+          </td> -->
+        </tr>
+      </tbody>
+    </table>
+  </div>

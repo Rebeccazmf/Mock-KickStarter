@@ -1,0 +1,138 @@
+<div class="page-header">
+  <h1>Creator Details</h1>
+</div>
+<br/>
+
+<div class="row">
+  <!--span (click)="toggleAdd()">
+    <input type="checkbox" data-onstyle="success" data-size="normal" [checked]="addEnabled" data-toggle="toggle" name="add-toggle"
+      id="add-toggle" data-on="<i class='fa fa-plus'></i> Add Creator" data-off="<i class='fa fa-plus'></i> Add Creator">
+  </span-->
+
+
+  <span>
+    <button class="btn btn-success" (click)="refreshCreator()">
+      <i class='fa fa-refresh'></i>
+    </button>
+  </span>
+ 
+  <span class="form-inline">
+    <span class="input-group add-on">
+        <form ngForm #searchForm="ngForm" (ngSubmit)="onSearch(searchForm)">              
+      <input id="searchValue" type="text" class="form-control" placeholder="Search" ngModel name="searchValue" #searchValue="ngModel"/>
+      <div class="input-group-btn">
+        <button class="btn btn-success" type="submit">
+          <i class="glyphicon glyphicon-search"></i>
+        </button>
+      </div>  
+    </form>
+    </span>
+  </span>
+ 
+  
+</div>
+
+<div>
+  <ul class="list-group">
+    <li class="list-group-item" *ngFor="let track of results | async">
+      <img src="{{track.thumbnail}}">
+      <a target="_blank" href="{{track.link}}">{{ track.track }}
+      </a>
+    </li>
+  </ul>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th class="col-md-2 text-center">Creator ID</th>
+        <th class="col-md-2 text-center">yourName</th>
+        <th class="col-md-3 text-center">User Description</th>
+        <th class="col-md-2 text-center">Username</th>
+        <th class="col-md-2 text-center">Role Id</th>
+        <th class="col-md-2 text-center">User Status</th>
+        <th class="col-md-* text-center">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let creator of creators" class="text-center">
+        <td>{{creator.userId}}</td>
+        <td>{{creator.yourName}}</td>
+        <td>{{creator.userDesc}}</td>
+        <td>{{creator.username}}</td>
+        <td>{{creator.roleId}}</td>
+        <td>{{creator.userStatus}}</td>
+        <td>
+          <button type="button" class="btn btn-warning fa fa-edit" (click)="refreshIdea(creator);editCreator(creator,editCreatorModal)">
+          </button>
+          <!-- <button type="button" class="btn btn-danger fa fa-minus" (click)="deleteCreator(creator,deleteCreatorModal)"></button> -->
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<br/>
+
+<div class="row">
+  <modal #editCreatorModal>
+    <modal-header>
+      <h1>Edit Creator</h1>
+    </modal-header>
+
+    <modal-content class="row">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th class="col-md-1 text-center">Idea ID</th>
+            <th class="col-md-1 text-center">Idea Name</th>
+            <th class="col-md-1 text-center">Idea Desc</th>
+            <th class="col-md-2 text-center">target amount</th>
+            <th class="col-md-2 text-center">gathered amount</th>
+            <th class="col-md-1 text-center">start date</th>
+            <th class="col-md-1 text-center">end date</th>
+            <th class="col-md-1 text-center">Idea Status</th>
+            <th class="col-md-1 text-center">User Id</th>
+            <th class="col-md-1 text-center">categoryId</th>
+            <th class="col-md-2 text-center">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let idea of ideas" class="text-center">
+            <td>{{idea.ideaId}}</td>
+            <td>{{idea.ideaName}}</td>
+            <td>{{idea.ideaDesc}}</td>
+            <td>{{idea.targetAmount}}</td>
+            <td>{{idea.gatheredAmount}}</td>
+            <td>{{idea.startDate}}</td>
+            <td>{{idea.endDate}}</td>
+            <td>{{idea.ideaStatus}}</td>
+            <td>{{idea.userId}}</td>
+            <td>{{idea.categoryId}}</td>
+            <!-- <button class="btn btn-primary" (click)="onEdit();editCreatorModal.close()">Buy</button> -->
+          </tr>
+        </tbody>
+      </table>
+    </modal-content>
+    <modal-footer>
+      <button class="btn btn-primary" [disabled]="ideaStatus()" (click)="deleteCreator(creator,deleteCreatorModal)">Delete</button>
+      <button class="btn btn-primary" [disabled]="!ideaStatus()" (click)="onDisable(creator);editCreatorModal.close()">Disable</button>
+    </modal-footer>
+  </modal>
+</div>
+
+<div class="row">
+  <modal #deleteCreatorModal>
+    <modal-header>
+      <h1>Delete Creator</h1>
+    </modal-header>
+
+    <modal-content class="row">
+      <div *ngIf="modalError" class="row alert alert-danger">
+        Could not Delete
+      </div>
+      Are you sure ?
+    </modal-content>
+    <modal-footer>
+      <button class="btn btn-primary" (click)="onDelete()">Delete</button>
+      <button class="btn btn-primary" (click)="deleteCreatorModal.close()">close</button>
+    </modal-footer>
+  </modal>
+</div>

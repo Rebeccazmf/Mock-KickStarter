@@ -1,0 +1,27 @@
+<div>
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let track of results | async">
+        <img src="{{track.thumbnail}}">
+        <a target="_blank" href="{{track.link}}">{{ track.track }}
+        </a>
+      </li>
+    </ul>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th class="col-md-1 text-center">Record ID</th>
+          <th class="col-md-2 text-center">Service ID</th>
+          <th class="col-md-2 text-center">Percentage</th>
+          <th class="col-md-2 text-center">Update Date</th>  
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let completionrecord of completionrecords" class="text-center">
+          <td>{{completionrecord.recordId}}</td>
+          <td>{{completionrecord.serviceId}}</td>
+          <td>{{completionrecord.percentage}}</td>
+          <td>{{completionrecord.updateDate}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>

@@ -1,0 +1,68 @@
+<nav class="navbar navbar-light bg-faded">
+  <a class="navbar-brand" [routerLink]="['homepage']">Home Page</a>
+  <ul class="nav navbar-nav">
+    <!-- <li *ngIf="isGuest()" class="nav-item" [routerLinkActive]="['active']">
+            <a class="nav-link" [routerLink]="['home']">{{intro}}</a>
+          </li> -->
+    <li *ngIf="isGuest()" class="nav-item" [routerLinkActive]="['active']">
+      <a class="nav-link" [routerLink]="['login']">Login</a>
+    </li>
+    <li *ngIf="isCreator()" class="nav-item" [routerLinkActive]="['active']">
+      <a class="nav-link" [routerLink]="['creator']">Creator</a>
+    </li>
+    <li *ngIf="isStartup()" class="nav-item" [routerLinkActive]="['active']">
+      <a class="nav-link" [routerLink]="['startup']">Startup</a>
+    </li>
+    <li *ngIf="isFunder()" class="nav-item" [routerLinkActive]="['active']">
+        <a class="nav-link" [routerLink]="['funder']">Funder</a>
+      </li>
+  </ul>
+  <ul class="nav navbar-nav">
+      
+      <li *ngIf="isFunder()" class="nav-item" [routerLinkActive]="['active']">
+          <a class="nav-link" [routerLink]="['purchasrList']">Purchase List</a>
+        </li>
+    <li *ngIf="isAdmin()" class="nav-item" [routerLinkActive]="['active']">
+      <a class="nav-link" [routerLink]="['role']">Role</a>
+    </li>
+    
+    <li *ngIf="isAdmin()" class="nav-item" [routerLinkActive]="['active']">
+      <a class="nav-link" [routerLink]="['category']">Category</a>
+    </li>
+    <li *ngIf="isAdmin()" class="nav-item" [routerLinkActive]="['active']">
+        <a class="nav-link" [routerLink]="['admin-idea']">Idea</a>
+      </li>
+    <li *ngIf="isAdmin()" class="nav-item" [routerLinkActive]="['active']">
+      <a class="nav-link" [routerLink]="['admin-startup']">Startup</a>
+    </li>
+    <li *ngIf="isAdmin()" class="nav-item" [routerLinkActive]="['active']">
+      <a class="nav-link" [routerLink]="['admin-creator']">Creator</a>
+    </li>
+    <li *ngIf="isGuest()" class="nav-item" [routerLinkActive]="['active']">
+      <a class="nav-link" [routerLink]="['register']">Register</a>
+    </li>
+    <li *ngIf="isCreator()" class="nav-item" [routerLinkActive]="['active']">
+      <a class="nav-link" [routerLink]="['option']">Option</a>
+    </li>
+    <li *ngIf="isCreator()" class="nav-item" [routerLinkActive]="['active']">
+      <a class="nav-link" [routerLink]="['startupservice']">Service</a>
+    </li>
+    <li *ngIf="isCreator()" class="nav-item" [routerLinkActive]="['active']">
+        <a class="nav-link" [routerLink]="['bidlist']">Bid List</a>
+      </li>
+      <li *ngIf="isCreator()" class="nav-item" [routerLinkActive]="['active']">
+          <a class="nav-link" [routerLink]="['viewcompletion']">Completion Records</a>
+        </li>
+    <li *ngIf="isStartup()" class="nav-item" [routerLinkActive]="['active']">
+      <a class="nav-link" [routerLink]="['bid']">Bid Records</a>
+    </li>
+    <li *ngIf="isStartup()" class="nav-item" [routerLinkActive]="['active']">
+        <a class="nav-link" [routerLink]="['completionrecord']">Completion Records</a>
+      </li>
+  </ul>
+  <ul class="nav navbar-nav navbar-right">
+    <li *ngIf="!isGuest()" class="nav-item" [routerLinkActive]="['active']">
+      <a class="nav-link" [routerLink]="['login']" (ngSubmit)="logout()">Logout</a>
+    </li>
+  </ul>
+</nav>

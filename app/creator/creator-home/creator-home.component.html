@@ -1,0 +1,192 @@
+<div class="page-header">
+    <h1>Idea Details</h1>
+  </div>
+  <br/>
+  
+  <div class="row">
+    <!--span (click)="toggleAdd()">
+      <input type="checkbox" data-onstyle="success" data-size="normal" [checked]="addEnabled" data-toggle="toggle" name="add-toggle"
+        id="add-toggle" data-on="<i class='fa fa-plus'></i> Add idea" data-off="<i class='fa fa-plus'></i> Add idea">
+    </span-->
+  
+    <span>
+      <button type="button" style="font-size:1em;" class="btn btn-success btn-circle" [ngClass]="{'active ':!addEnabled,'disabled':addEnabled}"
+        (click)="toggleAdd()">
+        <i class='fa fa-plus'></i>
+      </button>
+    </span>
+    <span>
+      <button class="btn btn-success" (click)="refreshIdea()">
+        <i class='fa fa-refresh'></i>
+      </button>
+    </span>
+  
+    <span class="form-inline">
+      <span class="input-group add-on">
+        <input class="form-control" placeholder="Search" name="srch-term" id="srch-term" type="text">
+        <div class="input-group-btn">
+          <button class="btn btn-success" type="submit">
+            <i class="glyphicon glyphicon-search"></i>
+          </button>
+        </div>
+      </span>
+    </span>
+  
+  
+  </div>
+  
+  <div *ngIf="addEnabled">
+    <div class="page-header">
+      <h3>Add Idea</h3>
+    </div>
+    <div *ngIf="(!creatorForm.pristine && !creatorForm.valid)" class="row alert alert-danger">
+      <div *ngIf="(ideaName.touched || ideaName.dirty )&& !ideaName.valid">
+        <div *ngIf="ideaName.errors.required">Idea Name is required</div>
+        <div *ngIf="ideaName.errors.minlength">Minmum is {{ideaName.errors.minlength.requiredLength}}</div>
+        <div *ngIf="ideaName.errors.pattern">Only Characters</div>
+      </div>
+    </div>
+    <form ngForm #creatorForm="ngForm" (ngSubmit)="onSubmit(creatorForm)">
+      <div class="form-group">
+        <label class="control-label" for="ideaName">IdeaName</label>
+        <input type="text" id="ideaName" ngModel name="ideaName" #ideaName="ngModel" class="form-control"
+          minlength="2" pattern="[a-zA-Z]*" required/>
+      </div>
+  
+      <div class="form-group">
+        <label for="ideaDesc" class="control-label">IdeaDesc</label>
+        <input type="text" ngModel name="ideaDesc" id="ideaDesc"  #ideaDesc="ngModel" class="form-control">
+      </div>
+      <div class="form-group">
+          <label class="control-label" for="targetAmount">Idea target amount</label>
+          <input type="text" id="targetAmount" ngModel name="targetAmount" #targetAmount="ngModel" class="form-control"
+            minlength="2" pattern="[0-9]*" required/>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="startDate">Idea Start Date</label>
+            <input type="text" id="startDate" ngModel name="startDate" #startDate="ngModel" class="form-control"
+              minlength="4" pattern="([0-9]{4}[-][0-9]{2}[-][0-9]{2})" required/>
+          </div>
+          <div class="form-group">
+              <label class="control-label" for="endDate">Idea End Date</label>
+              <input type="text" id="endDate" ngModel name="endDate" #endDate="ngModel" class="form-control"
+                minlength="4" pattern="([0-9]{4}[-][0-9]{2}[-][0-9]{2})" required/>
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="categoryId">Idea Category</label>
+                <input type="text" id="categoryId" ngModel name="categoryId" #categoryId="ngModel" class="form-control"
+                  minlength="1" pattern="[0-9]*" required/>
+              </div>
+              <!-- pass user id -->
+              <!-- <div class="form-group">
+                  <input type="hidden" id="userId" ngModel name="userId" #userId="ngModel" class="form-control"/>
+                </div> -->
+      <div class="text-center">
+        <button type="submit" [disabled]="creatorForm.invalid" class="btn btn-primary">Submit</button>
+      </div>
+    </form>
+  </div>
+  <div>
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let track of results | async">
+        <img src="{{track.thumbnail}}">
+        <a target="_blank" href="{{track.link}}">{{ track.track }}
+        </a>
+      </li>
+    </ul>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th class="col-md-1 text-center">Idea ID</th>
+          <th class="col-md-1 text-center">Idea Name</th>
+          <th class="col-md-1 text-center">Idea Desc</th>
+          <th class="col-md-* text-center">Target Amount</th>
+          <th class="col-md-* text-center">Gathered Amount</th>
+          <th class="col-md-2 text-center">Start Date</th>
+          <th class="col-md-2 text-center">End Date</th>
+          <th class="col-md-2 text-center">Idea Status</th>
+          <th class="col-md-1 text-center">Category Id</th>
+          <th class="col-md-2 text-center">Action</th>
+  
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let idea of ideas" class="text-center">     
+          <td>{{idea.ideaId}}</td>
+          <td>{{idea.ideaName}}</td>
+          <td>{{idea.ideaDesc}}</td>
+          <td>{{idea.targetAmount}}</td>
+          <td>{{idea.gatheredAmount}}</td>
+          <td>{{idea.startDate}}</td>
+          <td>{{idea.endDate}}</td>
+          <td>{{idea.ideaStatus}}</td>
+          <td>{{idea.categoryId}}</td>
+          <td>
+            <button type="button" class="btn btn-warning fa fa-edit" (click)="editIdea(idea,editIdeaModal)"> </button>
+            <button type="button" class="btn btn-danger fa fa-minus" (click)="deleteIdea(idea,deleteIdeaModal)"></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <br/>
+  <br/>
+  
+  <div class="row">
+    <modal #editIdeaModal>
+      <modal-header>
+        <h1>Edit Idea</h1>
+      </modal-header>
+     
+      <modal-content class="row">
+        <form ngForm #CreatorEditForm="ngForm">
+  
+          <div class="form-group">
+            <label class="control-label" for="ideaName">IdeaName</label>
+            <input type="text" id="ideaId" [(ngModel)]="idea.ideaId" name="editIdeaId" disabled class="form-control" />
+            
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="ideaName">IdeaName</label>
+            <input type="text" id="ideaName" [(ngModel)]="idea.ideaName" name="editIdeaName" #editIdeaName="ngModel" class="form-control"
+              minlength="4" pattern="[a-zA-Z]*" required/>
+              <div *ngIf="(!CreatorEditForm.pristine && !CreatorEditForm.valid)">
+                  <div *ngIf="!editIdeaName.valid && editIdeaName.errors.required">idea Name is required</div>
+                  <div *ngIf="!editIdeaName.valid && editIdeaName.errors.minlength">Minmum is {{editIdeaName.errors.minlength.requiredLength}}</div>
+                  <div *ngIf="!editIdeaName.valid && editIdeaName.errors.pattern">Only Characters</div>
+                </div>
+          </div>
+  
+          <div class="form-group">
+            <label for="ideaDesc" class="control-label">IdeaDesc</label>
+            <input type="text" id="ideaDesc" [(ngModel)]="idea.ideaDesc" name="editIdeaDesc" #editIdeaDesc="ngModel" class="form-control">
+          </div>
+  
+        </form>
+      </modal-content>
+      <modal-footer>
+        <button class="btn btn-primary" [disabled]="CreatorEditForm.invalid" (click)="onEdit();editIdeaModal.close()">Save</button>
+        <button class="btn btn-primary" (click)="editIdeaModal.close()">close</button>
+      </modal-footer>
+    </modal>
+  </div>
+  
+  
+  <div class="row">
+    <modal #deleteIdeaModal>
+      <modal-header>
+        <h1>Delete Idea</h1>
+      </modal-header>
+     
+      <modal-content class="row">
+          <div *ngIf="modalError" class="row alert alert-danger">
+                  Could not Delete
+          </div>
+            Are you sure ?
+      </modal-content>
+      <modal-footer>
+        <button class="btn btn-primary" (click)="onDelete()">Delete</button>
+        <button class="btn btn-primary" (click)="deleteIdeaModal.close()">close</button>
+      </modal-footer>
+    </modal>
+  </div>

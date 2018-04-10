@@ -1,0 +1,90 @@
+<div class="page-header">
+  <h3>Bid List</h3>
+</div>
+<div>
+  <!-- <div *ngIf="(!creatorForm.pristine && !creatorForm.valid)" class="row alert alert-danger">
+        <div *ngIf="(ideaName.touched || ideaName.dirty )&& !ideaName.valid">
+          <div *ngIf="ideaName.errors.required">Idea Name is required</div>
+          <div *ngIf="ideaName.errors.minlength">Minmum is {{ideaName.errors.minlength.requiredLength}}</div>
+          <div *ngIf="ideaName.errors.pattern">Only Characters</div>
+        </div>
+      </div> -->
+
+  <div>
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let track of results | async">
+        <img src="{{track.thumbnail}}">
+        <a target="_blank" href="{{track.link}}">{{ track.track }}
+        </a>
+      </li>
+    </ul>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th class="col-md-1 text-center">Bid ID</th>
+          <th class="col-md-2 text-center">Bid Desc</th>
+          <th class="col-md-2 text-center">Start Date</th>
+          <th class="col-md-2 text-center">End Date</th>
+          <th class="col-md-2 text-center">Bid Amount</th>
+          <th class="col-md-1 text-center">Service Id</th>
+          <th class="col-md-2 text-center">Bid Status</th>
+          <th class="col-md-2 text-center">Action</th>
+
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let bidrecord of bidrecords" class="text-center">
+          <td>{{bidrecord.bidId}}</td>
+          <td>{{bidrecord.bidDesc}}</td>
+          <td>{{bidrecord.startDate}}</td>
+          <td>{{bidrecord.endDate}}</td>
+          <td>{{bidrecord.bidAmount}}</td>
+          <td>{{bidrecord.serviceId}}</td>
+          <td>{{bidrecord.bidStatus}}</td>
+          <td>
+            <button type="button" class="btn btn-warning fa fa-edit" (click)="editBidrecord(bidrecord,editBidrecordModal)"> </button>
+            <!-- <button type="button" class="btn btn-danger fa fa-minus" (click)="deleteBidrecord(bidrecord,deleteBidrecordModal)"></button> -->
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div>
+    <div class="row">
+      <modal #editBidrecordModal>
+        <modal-header>
+          <h1>Edit Bidrecord</h1>
+        </modal-header>
+
+        <modal-content class="row">
+          <form ngForm #BidEditForm="ngForm">
+
+            <div class="form-group">
+              <label class="control-label" for="bidId">Bid Id</label>
+              <input type="text" id="bidId" [(ngModel)]="bidrecord.bidId" name="editBidId" disabled class="form-control" />
+
+            </div>
+            <div class="form-group">
+              <label for="bidStatus" class="control-label">Bid Status</label>
+              <input type="text" id="bidStatus" [(ngModel)]="bidrecord.bidStatus" name="editBidStatus" #editBidStatus="ngModel" class="form-control"
+                minlength="1" pattern="[a-zA-Z]*" required/>
+            </div>
+            <!-- <div class="form-group">
+                  <label for="bidAmount" class="control-label">Bid Amount</label>
+                  <input type="text" id="bidAmount" [(ngModel)]="bidrecord.bidAmount" name="editBidAmount" #editBidAmount="ngModel"
+                    class="form-control" minlength="1" pattern="[0-9]*" required/>
+                </div>
+                <div class="form-group">
+                  <label for="maxFunding" class="control-label">Max Funding</label>
+                  <input type="text" id="maxFunding" [(ngModel)]="bidrecord.maxFunding" name="editMaxFunding" #editMaxFunding="ngModel" class="form-control"
+                    minlength="1" pattern="[0-9]*" required/>
+                </div> -->
+
+          </form>
+        </modal-content>
+        <modal-footer>
+          <button class="btn btn-primary" [disabled]="BidEditForm.invalid" (click)="onEdit();editBidrecordModal.close()">Save</button>
+          <button class="btn btn-primary" (click)="editBidrecordModal.close()">close</button>
+        </modal-footer>
+      </modal>
+    </div>

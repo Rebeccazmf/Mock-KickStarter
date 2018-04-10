@@ -1,0 +1,126 @@
+<div class="page-header">
+  <h1>Startup Details</h1>
+</div>
+<br/>
+
+<div class="row">
+  <!--span (click)="toggleAdd()">
+    <input type="checkbox" data-onstyle="success" data-size="normal" [checked]="addEnabled" data-toggle="toggle" name="add-toggle"
+      id="add-toggle" data-on="<i class='fa fa-plus'></i> Add Startup" data-off="<i class='fa fa-plus'></i> Add Startup">
+  </span-->
+
+  
+  <span>
+    <button class="btn btn-success" (click)="refreshStartup()">
+      <i class='fa fa-refresh'></i>
+    </button>
+  </span>
+
+  <span class="form-inline">
+    <span class="input-group add-on">
+        <form ngForm #searchForm="ngForm" (ngSubmit)="onSearch(searchForm)">                          
+            <input id="searchValue" type="text" class="form-control" placeholder="Search" ngModel name="searchValue" #searchValue="ngModel"/>
+            <div class="input-group-btn">
+        <button class="btn btn-success" type="submit">
+          <i class="glyphicon glyphicon-search"></i>
+        </button>
+      </div>
+    </form>
+    </span>
+  </span>
+
+
+</div>
+
+<div>
+  <ul class="list-group">
+    <li class="list-group-item" *ngFor="let track of results | async">
+      <img src="{{track.thumbnail}}">
+      <a target="_blank" href="{{track.link}}">{{ track.track }}
+      </a>
+    </li>
+  </ul>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th class="col-md-2 text-center">Startup ID</th>
+        <th class="col-md-3 text-center">categoryId</th>
+        <th class="col-md-4 text-center">userId</th>
+        <th class="col-md-* text-center">Action</th>
+
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let startup of startups" class="text-center">
+        <td>{{startup.startupId}}</td>
+        <td>{{startup.categoryId}}</td>
+        <td>{{startup.userId}}</td>
+        <td>
+          <button type="button" class="btn btn-warning fa fa-edit" (click)="editStartup(startup,editStartupModal)"> </button>
+          <button type="button" class="btn btn-danger fa fa-minus" (click)="deleteStartup(startup,deleteStartupModal)"></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<br/>
+<br/>
+
+<div class="row">
+  <modal #editStartupModal>
+    <modal-header>
+      <h1>Edit Startup</h1>
+    </modal-header>
+
+    <modal-content class="row">
+      <form ngForm #AsEditForm="ngForm">
+
+        <div class="form-group">
+          <label class="control-label" for="startupId">StartupID</label>
+          <input type="text" id="startupId" [(ngModel)]="startup.startupId" name="editStartupId" disabled class="form-control" />
+
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="startupName">StartupName</label>
+          <input type="text" id="startupName" [(ngModel)]="startup.startupName" name="editStartupName" #editStartupName="ngModel" class="form-control"
+            minlength="4" pattern="[a-zA-Z]*" required/>
+          <div *ngIf="(!AsEditForm.pristine && !AsEditForm.valid)">
+            <div *ngIf="!editStartupName.valid && editStartupName.errors.required">Startup Name is required</div>
+            <div *ngIf="!editStartupName.valid && editStartupName.errors.minlength">Minmum is {{editStartupName.errors.minlength.requiredLength}}</div>
+            <div *ngIf="!editStartupName.valid && editStartupName.errors.pattern">Only Characters</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="startupDesc" class="control-label">StartupDesc</label>
+          <input type="text" id="startupDesc" [(ngModel)]="startup.startupDesc" name="editStartupDesc" #editStartupDesc="ngModel" class="form-control">
+        </div>
+
+      </form>
+    </modal-content>
+    <modal-footer>
+      <button class="btn btn-primary" [disabled]="AsEditForm.invalid" (click)="onEdit();editStartupModal.close()">Save</button>
+      <button class="btn btn-primary" (click)="editStartupModal.close()">close</button>
+    </modal-footer>
+  </modal>
+</div>
+
+
+<div class="row">
+  <modal #deleteStartupModal>
+    <modal-header>
+      <h1>Delete Startup</h1>
+    </modal-header>
+
+    <modal-content class="row">
+      <div *ngIf="modalError" class="row alert alert-danger">
+        Could not Delete
+      </div>
+      Are you sure ?
+    </modal-content>
+    <modal-footer>
+      <button class="btn btn-primary" (click)="onDelete()">Delete</button>
+      <button class="btn btn-primary" (click)="deleteStartupModal.close()">close</button>
+    </modal-footer>
+  </modal>
+</div>
